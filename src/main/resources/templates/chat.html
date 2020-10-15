@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>消息</title>
+    <script src="https://code.caoxuan.top/js/jquery-3.5.1.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script>
+        $(function () {
+            var uuid = $.cookie('uuid');
+            var from;
+            if ("WebSocket" in window) {
+                //alert("您的浏览器支持 WebSocket!");
+
+                // 打开一个 web socket
+                var ws = new WebSocket("ws://localhost:8080/echo");
+
+                ws.onopen = function () {
+                    // Web Socket 已连接上，使用 send() 方法发送数据
+                    alert("已连接服务器")
+                    ws.send("{\"type\":0,\"uuid\":\"" + uuid + "\"}");
+                };
+
+                ws.onmessage = function (evt) {
+                    var received_msg = evt.data;
+                    console.log(received_msg);
+                    var content = JSON.parse(received_msg)["content"];
+                    var p = "<textarea style='width: 200px; margin-left: 0; resize: none' readonly='readonly'>" + "对方：" + content + "</textarea><br>";
+                    $("#displayText").append(p);
+
+                };
+                ws.onclose = function (ev) {
+                    // 关闭 websocket
+                    alert("连接已关闭" + ev.reason)
+                };
+            } else {
+                // 浏览器不支持 WebSocket
+                alert("您的浏览器不支持 WebSocket!");
+                return;
+            }
+            $("#send").click(function () {
+                var inputText = $("#inputText");
+                var content = inputText.val();
+                inputText.val("");
+                console.log(content);
+                var p = "<textarea style='width: 200px; margin-left: 50%; resize: none' readonly='readonly'>" + content + "</textarea><br>"
+                $("#displayText").append(p);
+                var message = "{\"type\":1,\"from\":\"" + from +"\",\"content\":\""+ content +"\",\"uuid\":\"" + uuid + "\"}";
+                console.log(message);
+                ws.send(message);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+
+    </script>
+    <style>
+        #box {
+            width: 480px;
+            height: 960px;
+            margin: 0 auto;
+        }
+
+        #displayText {
+            border: black solid 1px;
+            width: 480px;
+            height: 480px;
+            resize: none;
+            float: left;
+            font-size: 18px;
+            overflow-y: auto;
+        }
+
+        #in {
+            float: left;
+            width: 100%;
+            position: relative;
+        }
+
+        #inputText {
+            width: 100%;
+            height: 50px;
+            font-size: 16px;
+            resize: none;
+        }
+
+        #send {
+            position: absolute;
+            top: 50%;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="displayText"></div>
+    <div id="in"><textarea id="inputText"></textarea><input id="send" type="submit" value="发送"></div>
+</div>
+</body>
+
+</html>
