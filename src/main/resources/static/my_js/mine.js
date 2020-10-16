@@ -19,6 +19,11 @@ function change(bool) {
  */
 function draw(isMine, content) {
     console.log("content=" + content);
+    if (""===content.trim()) {
+        console.log("空或空白字符串");
+        alert("发送内容不能为空")
+        return;
+    }
     const textView = document.createElement("div");
     textView.style.cssText = "border: 1px black solid; width: 200px; display: block;word-break: break-all;white-space: normal;";
     if (isMine) {
@@ -27,8 +32,8 @@ function draw(isMine, content) {
     const p = document.createElement("p");
     p.innerHTML = content;
     textView.appendChild(p);
-    const displayText = document.getElementById("displayText");
-    displayText.appendChild(textView);
+    const displayDiv = document.getElementById("display_div");
+    displayDiv.appendChild(textView);
 }
 
 
@@ -73,4 +78,11 @@ function upload(content, me) {
 function getFileName(o){
     var pos=o.lastIndexOf("\\");
     return o.substring(pos+1);
+}
+
+//获取url中的参数
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+    if (r != null) return unescape(r[2]); return null; //返回参数值
 }

@@ -2,11 +2,14 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+<!--
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+-->
     <title>多人运动</title>
-    <script src="https://code.caoxuan.top/js/jquery-3.5.1.js"></script>
-    <script type="text/javascript" src="/static/js/uuid.js"></script>
-    <script type="text/javascript" src="/static/js/mine.js"></script>
-    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="/static/my_js/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="/static/my_js/uuid.js"></script>
+    <script type="text/javascript" src="/static/my_js/mine.js"></script>
+    <script src="/static/my_js/jquery.cookie.min.js"></script>
     <script th:inline="javascript">
         $(function () {
             var roomId = $.cookie('roomId');
@@ -32,7 +35,7 @@
                     var message = JSON.parse(received_msg);
                     if (me !== message["from"]) {
                         var content = message["content"];
-                        draw(false,content)
+                        draw(false, content)
                     }
                 };
                 ws.onclose = function (ev) {
@@ -50,33 +53,28 @@
                 let content;
                 if ("" !== file.val()) {
                     const fileName = getFileName(file.val());
-                    content = "<a href='" + "/files/" + fileName + "'>" + fileName + "</a>";
+                    content = "<a href=\"" + "/files/" + fileName + "\" target=\"_blank\">" + fileName + "</a>";
                     //成功后draw();Controller将会向所有人广播这条消息,me是为自己过滤这条广播
                     upload(content, me);
                 } else {
                     content = inputText.val();
                     draw(true, content);
-                    send(ws,content,roomId,me);
+                    send(ws, content, roomId, me);
                 }
                 inputText.val("");
 
             });
         });
 
-
-
-    </script>
-    <script type="text/javascript">
-
     </script>
     <style>
         #box {
             width: 480px;
-            height: 960px;
+            height: 640px;
             margin: 0 auto;
         }
 
-        #displayText {
+        #display_div {
             border: black solid 1px;
             width: 480px;
             height: 480px;
@@ -86,7 +84,7 @@
             overflow-y: auto;
         }
 
-        #in {
+        #input_div {
             float: left;
             width: 100%;
             position: relative;
@@ -94,7 +92,6 @@
 
         #inputText {
             width: 100%;
-            height: 50px;
             font-size: 16px;
             resize: none;
         }
@@ -104,15 +101,28 @@
             top: 50%;
             right: 0;
         }
+        /*#file_div{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+        }*/
+
     </style>
 </head>
 <body>
 <div id="box">
-    <div id="displayText"></div>
-    <div id="in"><textarea id="inputText"></textarea><input id="send" type="submit" value="发送"></div>
-    <form id="form" enctype="multipart/form-data">
-        文件：<input type="file" name="file" id="file">
-    </form>
+    <div id="display_div"></div>
+    <div id="input_div">
+        <textarea id="inputText"></textarea>
+        <div id="file_div">
+        <form id="form" enctype="multipart/form-data">
+            文件：<input type="file" name="file" id="file">
+        </form>
+        </div>
+        <input id="send" type="submit" value="发送">
+    </div>
+
 </div>
 </body>
 

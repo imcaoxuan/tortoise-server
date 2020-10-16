@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -26,7 +27,7 @@
                     console.log(received_msg);
                     var content = JSON.parse(received_msg)["content"];
                     var p = "<div style='border: 1px black solid; width: 200px; display: block;word-break: break-all;white-space: normal;' >" + "对方：" + content + "</div><br>";
-                    $("#displayText").append(p);
+                    $("#display_div").append(p);
 
                 };
                 ws.onclose = function (ev) {
@@ -51,7 +52,7 @@
                 }
                 inputText.val("");
                 var t = "<div style='border: 1px black solid; width: 200px; margin-left: 50%; display: block;word-break: break-all;white-space: normal;'>" + content + "</div><br>"
-                $("#displayText").append(t);
+                $("#display_div").append(t);
                 var message = "{\"type\":1,\"from\":\"" + from +"\",\"content\":\""+ content +"\",\"uuid\":\"" + uuid + "\"}";
                 ws.send(message);
             });
@@ -113,7 +114,7 @@
             margin: 0 auto;
         }
 
-        #displayText {
+        #display_div {
             border: black solid 1px;
             width: 480px;
             height: 480px;
@@ -145,7 +146,7 @@
 </head>
 <body>
 <div id="box">
-    <div id="displayText"></div>
+    <div id="display_div"></div>
     <div id="in"><textarea id="inputText"></textarea><input id="send" type="submit" value="发送"></div>
     <form id="form" enctype="multipart/form-data">
         文件：<input type="file" name="file" id="file">
@@ -153,4 +154,4 @@
 </div>
 </body>
 
-</html>
+</html>-->

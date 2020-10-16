@@ -5,23 +5,28 @@
     <title>登录</title>
     <script src="https://code.caoxuan.top/js/jquery-3.5.1.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-
+    <script type="text/javascript" src="/static/my_js/mine.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-4.5.3-dist/css/bootstrap.css">
     <script>
         $(function () {
+            if (getUrlParam("auto")) {
+                $("#username").val("user");
+                $("#password").val(getUrlParam("password"));
+                $("#login").submit();
+            }
             $("#form").submit(function () {
                 $.cookie('roomId',$("#password").val());
             });
-        })
+        });
     </script>
 </head>
 <body>
 <br/>
-<form id="form" action="/login" method="post">
+<form class="form-group" id="form" action="/login" method="post">
 用户名:
-<input type="text" id="username" name="username" placeholder="name"><br/>
+<input type="text" id="username" name="username" placeholder="username"><br/>
 密码:
 <input type="password" id="password" name="password" placeholder="password"><br/>
-<input type="submit" value="提交">
+<input type="submit" id="login" value="登录">
 </form>
 </body>
-</html>

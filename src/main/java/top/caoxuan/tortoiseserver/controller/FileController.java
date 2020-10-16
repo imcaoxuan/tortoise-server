@@ -53,7 +53,7 @@ public class FileController {
             jsonObject = new JSONObject();
             jsonObject.put("result", "success");
             jsonObject.put("fileName", fileName);
-            Message message = new Message(1, userId, "", "<a href=\"/files/" + fileName +"\">" +fileName + "</a>", WebSecurityConfig.uuid.toString());
+            Message message = new Message(1, userId, "", "<a href=\"/files/" + fileName +"\" target=\"_blank\">" +fileName + "</a>", WebSecurityConfig.uuid.toString());
             //向所有人广播。需要客户端自己判断该消息是否来自自己
             for (WebSocketSession session:
                  WebSocketHandler.SESSION_LIST) {

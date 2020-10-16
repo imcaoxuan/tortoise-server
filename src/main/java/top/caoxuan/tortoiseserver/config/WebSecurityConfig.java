@@ -25,13 +25,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .authorizeRequests()
 
-                .antMatchers( "/echo", "/test").permitAll()
+                .antMatchers( "/echo", "/test", "/static/**").permitAll()
 
                 .anyRequest().authenticated()
 
                 .and()
 
-            .formLogin()
+                .formLogin()
 
                 .loginPage("/signIn")
 
@@ -46,10 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
 
-            .logout()
+                .logout()
 
                 .permitAll()
-                .and().csrf().disable();;
+
+                .and().csrf().disable();
 
     }
 
@@ -66,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .password(new BCryptPasswordEncoder().encode("admin"))
                 .roles("admin")
                 .and()
-                .withUser("user")
+                .withUser("user@caoxuan.top")
                 .password(new BCryptPasswordEncoder().encode(uuid.toString()))
                 .roles("user");
         System.out.println("uuid:" + uuid);
