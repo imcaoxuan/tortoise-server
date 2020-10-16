@@ -20,7 +20,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
 
-    private static final List<WebSocketSession> SESSION_LIST = new ArrayList<>();
+    protected static final List<WebSocketSession> SESSION_LIST = new ArrayList<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -46,7 +46,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             return;
         }
         if (Message.Type.MSG.equals(message.getType())) {
-            if (WebSecurityConfig.uuid.toString().equals(message.getUuid())) {
+            if (WebSecurityConfig.uuid.toString().equals(message.getRoomId())) {
                 /*List<WebSocketSession> sessionList = SESSION_LIST;
                 sessionList.remove(session);
                 for (WebSocketSession webSocketSession : sessionList) {
@@ -63,7 +63,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 logger.warn("会话 " + session.getId() + "由于认证失败而被强制关闭");
             }
         } else if (Message.Type.AUTH.equals(message.getType())) {
-            if (WebSecurityConfig.uuid.toString().equals(message.getUuid())) {
+            if (WebSecurityConfig.uuid.toString().equals(message.getRoomId())) {
                 SESSION_LIST.add(session);
                 logger.info(session.getId() + "已加入");
             } else {

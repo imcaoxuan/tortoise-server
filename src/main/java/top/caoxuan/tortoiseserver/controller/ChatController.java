@@ -13,6 +13,6 @@ public class ChatController {
 
     @RequestMapping("/chat")
     public String chat() {
-        return "chat";
+        return "multiplayer_sport";
     }
 }

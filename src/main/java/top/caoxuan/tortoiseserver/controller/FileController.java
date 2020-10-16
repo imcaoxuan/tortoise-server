@@ -1,20 +1,18 @@
 package top.caoxuan.tortoiseserver.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import top.caoxuan.tortoiseserver.config.WebSecurityConfig;
+import top.caoxuan.tortoiseserver.entity.Message;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 
 /**
  * @author CX
@@ -33,7 +31,7 @@ public class FileController {
 
     @PostMapping(value = "/upload")
     @ResponseBody
-    public String upload(@RequestParam("file") MultipartFile file) {
+    public String upload(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId) {
         JSONObject jsonObject;
         if (file.isEmpty()) {
             return "empty file";
@@ -54,6 +52,13 @@ public class FileController {
             file.transferTo(dest);
             jsonObject = new JSONObject();
             jsonObject.put("result", "success");
+            jsonObject.put("fileName", fileName);
+            Message message = new Message(1, userId, "", "<a href=\"/files/" + fileName +"\">" +fileName + "</a>", WebSecurityConfig.uuid.toString());
+            //向所有人广播。需要客户端自己判断该消息是否来自自己
+            for (WebSocketSession session:
+                 WebSocketHandler.SESSION_LIST) {
+                session.sendMessage(new TextMessage(message.toJSONString()));
+            }
             return jsonObject.toJSONString();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,5 +1,7 @@
 package top.caoxuan.tortoiseserver.entity;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * @author CX
  * @version 1.0
@@ -12,19 +14,19 @@ public class Message {
     private String from;
     private String sessionId;
     private String content;
-    private String uuid;
+    private String roomId;
 
     public static class Type {
         public static final Integer AUTH = 0;
         public static final Integer MSG = 1;
     }
 
-    public Message(Integer type, String from, String sessionId, String content, String uuid) {
+    public Message(Integer type, String from, String sessionId, String content, String roomId) {
         this.type = type;
         this.from = from;
         this.sessionId = sessionId;
         this.content = content;
-        this.uuid = uuid;
+        this.roomId = roomId;
     }
 
     public Integer getType() {
@@ -59,11 +61,15 @@ public class Message {
         this.content = content;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getRoomId() {
+        return roomId;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String toJSONString() {
+        return JSON.toJSONString(this);
     }
 }
