@@ -7,16 +7,19 @@
     <script type="text/javascript" src="/static/js/uuid.js"></script>
     <script type="text/javascript" src="/static/js/mine.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <script>
+    <script th:inline="javascript">
         $(function () {
             var roomId = $.cookie('roomId');
             //我的userId
             var me = Math.uuid();
+            var ip = [[${ip}]];
+            var serverHost = "ws://" + ip + ":8080/echo";
+            console.log(serverHost)
             if ("WebSocket" in window) {
                 //alert("您的浏览器支持 WebSocket!");
 
                 // 打开一个 web socket
-                var ws = new WebSocket("ws://localhost:8080/echo");
+                var ws = new WebSocket(serverHost);
 
                 ws.onopen = function () {
                     // Web Socket 已连接上，使用 send() 方法发送数据
