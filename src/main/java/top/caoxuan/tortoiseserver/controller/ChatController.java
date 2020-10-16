@@ -18,9 +18,9 @@ public class ChatController {
 
     @RequestMapping("/chat")
     public String chat(Model model) throws UnknownHostException {
-        InetAddress inetAddress = Inet4Address.getLocalHost();
+        /*InetAddress inetAddress = Inet4Address.getLocalHost();
         String ip = inetAddress.getHostAddress();
-        model.addAttribute("ip", ip);
+        model.addAttribute("ip", ip);*/
         return "multiplayer_sport";
     }
 }

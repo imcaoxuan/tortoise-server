@@ -12,8 +12,7 @@
             var roomId = $.cookie('roomId');
             //我的userId
             var me = Math.uuid();
-            var ip = [[${ip}]];
-            var serverHost = "ws://" + ip + ":8080/echo";
+            var serverHost = "ws://" + window.location.host + "/echo";
             console.log(serverHost)
             if ("WebSocket" in window) {
                 //alert("您的浏览器支持 WebSocket!");
