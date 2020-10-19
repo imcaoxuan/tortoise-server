@@ -41,7 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")
 
                 .successForwardUrl("/chat")
-                //.failureUrl("/error")
+
+                .failureUrl("/signIn?isFailed=true")
 
                 //.defaultSuccessUrl("/success")
 

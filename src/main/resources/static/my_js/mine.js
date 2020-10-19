@@ -1,4 +1,4 @@
-var me;
+var me = null;
 var message;
 var webSocket;
 var roomId;
@@ -38,6 +38,10 @@ function draw(messageString) {
     textView.style.cssText = "border: 1px black solid; width: 200px; display: block;word-break: break-all;white-space: normal;";
     if (me === from) {
         textView.style.marginLeft = "50%";
+    } else {
+        var i = document.createElement("b");
+        i.innerText = from;
+        textView.appendChild(i);
     }
     const p = document.createElement("p");
     p.id = id;
@@ -49,7 +53,7 @@ function draw(messageString) {
 
 
 function send() {
-    webSocket.send(message);
+    webSocket.send(JSON.stringify(message));
 }
 
 function upload() {

@@ -12,7 +12,8 @@
     <script src="/static/my_js/jquery.cookie.min.js"></script>
     <script th:inline="javascript">
         $(function () {
-            me = Math.uuid();
+            var alias = prompt("请输入昵称");
+            me = "" !== alias.trim() ? alias : null;
             var sendBtn = $("#send");
             roomId = $.cookie('roomId');
             //我的userId
@@ -27,6 +28,9 @@
                 webSocket.onopen = function () {
                     // Web Socket 已连接上，使用 send() 方法发送数据
                     alert("已连接服务器");
+                    if (null == me) {
+                        me = Math.uuid();
+                    }
                     //连接成功后监听send按钮
                     sendBtn.attr("disabled", false);
                     //用于认证身份的消息
@@ -42,6 +46,7 @@
                     }
                 };
                 webSocket.onclose = function (ev) {
+                    me = null;
                     // 关闭 websocket
                     alert("连接已关闭！状态码：" + ev.code)
                     console.log(ev)
