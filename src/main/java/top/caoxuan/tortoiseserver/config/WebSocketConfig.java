@@ -1,6 +1,5 @@
 package top.caoxuan.tortoiseserver.config;
 
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -23,7 +22,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
 
     @Bean
-    public WebSocketHandler echoWebSocketHandler(){
+    public WebSocketHandler echoWebSocketHandler() {
         return new WebSocketHandler();
     }
 }

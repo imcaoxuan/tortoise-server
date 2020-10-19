@@ -1,10 +1,8 @@
 package top.caoxuan.tortoiseserver.controller;
 
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author CX
@@ -24,16 +22,22 @@ public class MainController {
         return "sign_in";
     }
 
-    @RequestMapping("/success")
+
+
+    /*@RequestMapping("/success")
     public String success() {
         return "success";
-    }
+    }*/
 
-    @RequestMapping("/test")
+    /*@RequestMapping("/test")
     @ResponseBody
-    public String test() {
-        return System.getProperty("user.dir");
-    }
+    public String test(@RequestParam("param") String param) {
+        return param.substring(3);
+        //return System.getProperty("user.dir");
+    }*/
+
+
+
 
 
    /* @RequestMapping("/error")

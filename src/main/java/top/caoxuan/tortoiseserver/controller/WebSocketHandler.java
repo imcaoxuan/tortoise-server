@@ -34,7 +34,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
-        super.handleTextMessage(session,textMessage);
+        super.handleTextMessage(session, textMessage);
         logger.warn(textMessage.getPayload());
         String payload = textMessage.getPayload();
         Message message;
@@ -43,6 +43,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("消息格式转换失败");
+            session.close(CloseStatus.NOT_ACCEPTABLE);
             return;
         }
         if (Message.Type.MSG.equals(message.getType())) {
@@ -52,9 +53,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 for (WebSocketSession webSocketSession : sessionList) {
                     webSocketSession.sendMessage(new TextMessage(payload));
                 }*/
-                for (WebSocketSession webSocketSession:
+                for (WebSocketSession webSocketSession :
                         SESSION_LIST) {
-                    if (webSocketSession!= session) {
+                    if (webSocketSession != session) {
                         webSocketSession.sendMessage(new TextMessage(payload));
                     }
                 }

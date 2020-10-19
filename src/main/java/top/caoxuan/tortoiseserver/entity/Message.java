@@ -21,12 +21,20 @@ public class Message {
         public static final Integer MSG = 1;
     }
 
-    public Message(Integer type, String from, String sessionId, String content, String roomId) {
+    public Message(Long id, Integer type, String from, String content, String roomId) {
+        this.id = id;
         this.type = type;
         this.from = from;
-        this.sessionId = sessionId;
         this.content = content;
         this.roomId = roomId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Integer getType() {

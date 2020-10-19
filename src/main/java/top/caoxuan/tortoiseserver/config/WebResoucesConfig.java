@@ -12,6 +12,6 @@ public class WebResoucesConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/**")
-                .addResourceLocations("file:" +System.getProperty("user.dir") + "/public/");
+                .addResourceLocations("file:" + System.getProperty("user.dir") + "/share/");
     }
 }

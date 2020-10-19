@@ -15,7 +15,7 @@
                 $("#login").submit();
             }
             $("#form").submit(function () {
-                $.cookie('roomId',$("#password").val());
+                $.cookie('roomId', $("#password").val());
             });
         });
     </script>
@@ -23,10 +23,10 @@
 <body>
 <br/>
 <form class="form-group" id="form" action="/login" method="post">
-用户名:
-<input type="text" id="username" name="username" placeholder="username"><br/>
-密码:
-<input type="password" id="password" name="password" placeholder="password"><br/>
-<input type="submit" id="login" value="登录">
+    用户名:
+    <input type="text" id="username" name="username" placeholder="username"><br/>
+    密码:
+    <input type="password" id="password" name="password" placeholder="password"><br/>
+    <input type="submit" id="login" value="登录">
 </form>
 </body>

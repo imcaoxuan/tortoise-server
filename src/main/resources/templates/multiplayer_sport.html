@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-<!--
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
--->
+    <!--
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    -->
     <title>多人运动</title>
     <script src="/static/my_js/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="/static/my_js/uuid.js"></script>
@@ -12,58 +12,73 @@
     <script src="/static/my_js/jquery.cookie.min.js"></script>
     <script th:inline="javascript">
         $(function () {
-            var roomId = $.cookie('roomId');
+            me = Math.uuid();
+            var sendBtn = $("#send");
+            roomId = $.cookie('roomId');
             //我的userId
-            var me = Math.uuid();
             var serverHost = "ws://" + window.location.host + "/echo";
             console.log(serverHost)
             if ("WebSocket" in window) {
                 //alert("您的浏览器支持 WebSocket!");
 
                 // 打开一个 web socket
-                var ws = new WebSocket(serverHost);
+                webSocket = new WebSocket(serverHost);
 
-                ws.onopen = function () {
+                webSocket.onopen = function () {
                     // Web Socket 已连接上，使用 send() 方法发送数据
                     alert("已连接服务器");
-                    ws.send("{\"type\":0,\"roomId\":\"" + roomId + "\"}");
+                    //连接成功后监听send按钮
+                    sendBtn.attr("disabled", false);
+                    //用于认证身份的消息
+                    var m = new Message(new Date().getTime(), 0, me, null, roomId);
+                    webSocket.send(JSON.stringify(m));
                 };
 
-                ws.onmessage = function (evt) {
+                webSocket.onmessage = function (evt) {
                     var received_msg = evt.data;
                     console.log(received_msg);
-                    var message = JSON.parse(received_msg);
-                    if (me !== message["from"]) {
-                        var content = message["content"];
-                        draw(false, content)
+                    if (me !== JSON.parse(received_msg)["from"]) {
+                        draw(received_msg);
                     }
                 };
-                ws.onclose = function (ev) {
+                webSocket.onclose = function (ev) {
                     // 关闭 websocket
-                    alert("连接已关闭" + ev.reason)
+                    alert("连接已关闭！状态码：" + ev.code)
+                    console.log(ev)
+                    sendBtn.attr("disabled", true);
                 };
             } else {
                 // 浏览器不支持 WebSocket
                 alert("您的浏览器不支持 WebSocket!");
                 return;
             }
-            $("#send").click(function () {
+            sendBtn.click(function () {
+                //这个id只是本地使用，比如动态修改某条消息。服务器收到消息后会重新再生成一个messageId，然后再转发。
                 const file = $("#file");
                 const inputText = $("#inputText");
-                let content;
+                const filePath = file.val();
+                console.log("file path :" + filePath);
+                message = new Message(new Date().getTime(), 1, me, null, roomId);
+                var content;
                 if ("" !== file.val()) {
                     const fileName = getFileName(file.val());
-                    content = "<a href=\"" + "/files/" + fileName + "\" target=\"_blank\">" + fileName + "</a>";
-                    //成功后draw();Controller将会向所有人广播这条消息,me是为自己过滤这条广播
-                    upload(content, me);
+                    content = "<a href= '/files/" + fileName + "' target='_blank'>" + fileName + "</a><i>[上传中...]</i>";
+                    message.content = content;
+                    //成功后服务器将会向所有人广播这条消息,me是为自己过滤这条广播
+                    upload();
                 } else {
                     content = inputText.val();
-                    draw(true, content);
-                    send(ws, content, roomId, me);
+                    if ("" === content.trim()) {
+                        alert("内容不能为空");
+                        return;
+                    }
+                    message.content = content;
+                    send();
                 }
+                draw(JSON.stringify(message));
                 inputText.val("");
-
             });
+
         });
 
     </script>
@@ -101,6 +116,7 @@
             top: 50%;
             right: 0;
         }
+
         /*#file_div{
             position: absolute;
             width: 100%;
@@ -114,11 +130,11 @@
 <div id="box">
     <div id="display_div"></div>
     <div id="input_div">
-        <textarea id="inputText"></textarea>
+        <label for="inputText"></label><textarea id="inputText"></textarea>
         <div id="file_div">
-        <form id="form" enctype="multipart/form-data">
-            文件：<input type="file" name="file" id="file">
-        </form>
+            <form id="form" enctype="multipart/form-data">
+                文件：<input type="file" name="file" id="file">
+            </form>
         </div>
         <input id="send" type="submit" value="发送">
     </div>
