@@ -13,12 +13,12 @@
     <script th:inline="javascript">
         $(function () {
             var alias = prompt("请输入昵称");
-            me = "" !== alias.trim() ? alias : null;
+            me = "" !== alias.trim() ? alias : Math.uuid();
             var sendBtn = $("#send");
             roomId = $.cookie('roomId');
             //我的userId
             var serverHost = "ws://" + window.location.host + "/echo";
-            console.log(serverHost)
+            console.log(serverHost);
             if ("WebSocket" in window) {
                 //alert("您的浏览器支持 WebSocket!");
 
@@ -27,7 +27,8 @@
 
                 webSocket.onopen = function () {
                     // Web Socket 已连接上，使用 send() 方法发送数据
-                    alert("已连接服务器");
+                    //alert("已连接服务器");
+                    $("#status").css("background-color", "green");
                     if (null == me) {
                         me = Math.uuid();
                     }
@@ -48,7 +49,8 @@
                 webSocket.onclose = function (ev) {
                     me = null;
                     // 关闭 websocket
-                    alert("连接已关闭！状态码：" + ev.code)
+                    //alert("连接已关闭！状态码：" + ev.code)
+                    $("#status").css("background-color", "gray");
                     console.log(ev)
                     sendBtn.attr("disabled", true);
                 };
@@ -84,20 +86,29 @@
                 inputText.val("");
             });
 
+            window.addEventListener("keydown", function (e) {
+                //event.preventDefault() 方法阻止元素发生默认的行为。
+                if (!e.shiftKey && 'Enter' === e.key) {
+                    e.preventDefault();
+                    sendBtn.click();
+                }
+            }, false);
+
+
         });
 
     </script>
     <style>
         #box {
-            width: 480px;
-            height: 640px;
+            width: 800px;
+            height: 600px;
             margin: 0 auto;
         }
 
         #display_div {
             border: black solid 1px;
-            width: 480px;
-            height: 480px;
+            width: 800px;
+            height: 600px;
             resize: none;
             float: left;
             font-size: 18px;
@@ -128,11 +139,21 @@
             height: 100%;
             top: 0;
         }*/
+        #status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: gray;
+            margin-left: 780px;
+        }
 
     </style>
 </head>
 <body>
 <div id="box">
+    <div id="bar">
+        <div id="status"></div>
+    </div>
     <div id="display_div"></div>
     <div id="input_div">
         <label for="inputText"></label><textarea id="inputText"></textarea>

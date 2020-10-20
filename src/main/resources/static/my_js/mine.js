@@ -34,21 +34,48 @@ function draw(messageString) {
     var id = messageJSON["id"];
     var content = messageJSON["content"];
     var from = messageJSON["from"];
-    const textView = document.createElement("div");
-    textView.style.cssText = "border: 1px black solid; width: 200px; display: block;word-break: break-all;white-space: normal;";
+    var textView = document.createElement("div");
+    textView.style.cssText = "width: 240px; display: block;word-break: break-all;white-space: normal;";
+    var fromDiv = document.createElement("div");
+    var contentDiv = document.createElement("div")
+    var alias = document.createElement("b");
+    var contentP = document.createElement("p");
     if (me === from) {
-        textView.style.marginLeft = "50%";
+        textView.style.marginLeft = "66%";
+
+        contentP.id = id;
+        contentP.innerHTML = content;
+        contentDiv.style.cssText = "border:1px gray solid;width:200px;float:left;border-top-left-radius:5px;border-top-right-radius:5px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;";
+        contentDiv.appendChild(contentP);
+
+        alias.innerText = from;
+        fromDiv.style.cssText = "width:30px;float:left;"
+        fromDiv.appendChild(alias);
+
+        textView.appendChild(contentDiv);
+        textView.appendChild(fromDiv);
     } else {
-        var i = document.createElement("b");
-        i.innerText = from;
-        textView.appendChild(i);
+        alias.innerText = from;
+        fromDiv.style.cssText = "width:30px;float:left;"
+        fromDiv.appendChild(alias);
+
+
+        contentP.id = id;
+        contentP.innerHTML = content;
+        contentDiv.style.cssText = "border:1px gray solid;width:200px;float:left;border-radius:50%;border-top-left-radius:5px;border-top-right-radius:5px;border-bottom-left-radius:5px;border-bottom-right-radius:5px;"
+        contentDiv.appendChild(contentP);
+
+        textView.appendChild(fromDiv);
+        textView.appendChild(contentDiv);
     }
-    const p = document.createElement("p");
-    p.id = id;
-    p.innerHTML = content;
-    textView.appendChild(p);
+
     const displayDiv = document.getElementById("display_div");
     displayDiv.appendChild(textView);
+    var l = document.createElement("div");
+    var br = document.createElement("br");
+    l.appendChild(br);
+    displayDiv.appendChild(l);
+    displayDiv.scrollTop = displayDiv.scrollHeight;
 }
 
 
@@ -57,7 +84,7 @@ function send() {
 }
 
 function upload() {
-    change(false);
+    //change(false);
     const formData = new FormData($('#form')[0]);
     formData.append("message", JSON.stringify(message));
     $.ajax({
@@ -80,7 +107,7 @@ function upload() {
         },
         complete: function () {
             $("#file").val(null);
-            change(true)
+            //change(true)
         }
     });
 }
