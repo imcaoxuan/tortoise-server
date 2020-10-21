@@ -14,19 +14,18 @@ public class Message {
     private String from;
     private String sessionId;
     private String content;
-    private String roomId;
 
     public static class Type {
-        public static final Integer AUTH = 0;
-        public static final Integer MSG = 1;
+        public static final int AUTH = 0;
+        public static final int TEXT = 1;
+        public static final int IMG = 2;
     }
 
-    public Message(Long id, Integer type, String from, String content, String roomId) {
+    public Message(Long id, Integer type, String from, String content) {
         this.id = id;
         this.type = type;
         this.from = from;
         this.content = content;
-        this.roomId = roomId;
     }
 
     public Long getId() {
@@ -69,13 +68,7 @@ public class Message {
         this.content = content;
     }
 
-    public String getRoomId() {
-        return roomId;
-    }
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
 
     public String toJSONString() {
         return JSON.toJSONString(this);

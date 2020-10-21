@@ -1,14 +1,12 @@
 var me = null;
 var message;
 var webSocket;
-var roomId;
 
-function Message(id, type, from, content, roomId) {
+function Message(id, type, from, content) {
     this.id = id;
     this.type = type;
     this.from = from;
     this.content = content;
-    this.roomId = roomId;
 }
 
 /**

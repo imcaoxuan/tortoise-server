@@ -13,6 +13,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import top.caoxuan.tortoiseserver.config.WebSecurityConfig;
 import top.caoxuan.tortoiseserver.entity.Message;
+import top.caoxuan.tortoiseserver.websocket.WebSocketHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +65,8 @@ public class FileController {
         jsonObject.put("messageId", message.getId());
         //为了预防客户端生成的id被篡改而带来的不良后果，在转发之前，在服务器重新生成一个id
         message.setId(System.currentTimeMillis());
-        message.setType(Message.Type.MSG);
-        message.setContent("<a href='/files/" + fileName + "' target='_blank' download='" + fileName + "'>" + fileName + "</a>");
-        message.setRoomId(WebSecurityConfig.uuid.toString());
+        message.setType(Message.Type.TEXT);
+        message.setContent("<a href='/share/files/" + fileName + "' target='_blank' download='" + fileName + "'>" + fileName + "</a>");
         //向所有人广播。需要客户端自己判断该消息是否来自自己
         for (WebSocketSession session :
                 WebSocketHandler.SESSION_LIST) {

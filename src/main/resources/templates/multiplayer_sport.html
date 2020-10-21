@@ -15,7 +15,6 @@
             var alias = prompt("请输入昵称");
             me = "" !== alias.trim() ? alias : Math.uuid();
             var sendBtn = $("#send");
-            roomId = $.cookie('roomId');
             //我的userId
             var serverHost = "ws://" + window.location.host + "/echo";
             console.log(serverHost);
@@ -34,9 +33,6 @@
                     }
                     //连接成功后监听send按钮
                     sendBtn.attr("disabled", false);
-                    //用于认证身份的消息
-                    var m = new Message(new Date().getTime(), 0, me, null, roomId);
-                    webSocket.send(JSON.stringify(m));
                 };
 
                 webSocket.onmessage = function (evt) {
@@ -65,11 +61,11 @@
                 const inputText = $("#inputText");
                 const filePath = file.val();
                 console.log("file path :" + filePath);
-                message = new Message(new Date().getTime(), 1, me, null, roomId);
+                message = new Message(new Date().getTime(), 1, me, null);
                 var content;
                 if ("" !== file.val()) {
                     const fileName = getFileName(file.val());
-                    content = "<a href= '/files/" + fileName + "' target='_blank'>" + fileName + "</a><i>[上传中...]</i>";
+                    content = "<a href= '/share/files/" + fileName + "' target='_blank' download='"+fileName +"'>" + fileName + "</a><i>[上传中...]</i>";
                     message.content = content;
                     //成功后服务器将会向所有人广播这条消息,me是为自己过滤这条广播
                     upload();
@@ -93,8 +89,6 @@
                     sendBtn.click();
                 }
             }, false);
-
-
         });
 
     </script>
@@ -164,7 +158,6 @@
         </div>
         <input id="send" type="submit" value="发送">
     </div>
-
 </div>
 </body>
 

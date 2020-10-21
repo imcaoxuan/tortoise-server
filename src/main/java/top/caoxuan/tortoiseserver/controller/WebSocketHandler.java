@@ -1,3 +1,4 @@
+/*
 package top.caoxuan.tortoiseserver.controller;
 
 import com.alibaba.fastjson.JSON;
@@ -11,11 +12,13 @@ import top.caoxuan.tortoiseserver.entity.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * @author CX
  * @version 1.0
  * @date 2020/10/14 14:59
- */
+ *//*
+
 public class WebSocketHandler extends TextWebSocketHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
@@ -48,11 +51,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
         if (Message.Type.MSG.equals(message.getType())) {
             if (WebSecurityConfig.uuid.toString().equals(message.getRoomId())) {
-                /*List<WebSocketSession> sessionList = SESSION_LIST;
+                */
+/*List<WebSocketSession> sessionList = SESSION_LIST;
                 sessionList.remove(session);
                 for (WebSocketSession webSocketSession : sessionList) {
                     webSocketSession.sendMessage(new TextMessage(payload));
-                }*/
+                }*//*
+
                 for (WebSocketSession webSocketSession :
                         SESSION_LIST) {
                     if (webSocketSession != session) {
@@ -95,3 +100,4 @@ public class WebSocketHandler extends TextWebSocketHandler {
         logger.warn(session.getId() + "已断开连接");
     }
 }
+*/

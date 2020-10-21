@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import top.caoxuan.tortoiseserver.controller.WebSocketHandler;
+import top.caoxuan.tortoiseserver.websocket.WebSocketHandler;
 
 /**
  * @author CX
