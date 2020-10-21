@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <title>error</title>
 </head>
+<script>
+    /**
+     * https://blog.csdn.net/itmyhome1990/article/details/45849669
+     */
+    var i = self.setInterval("countdown()", 1000);
+    var int = 5;
+    function countdown() {
+        document.getElementById("timer").innerText = int + "秒后自动跳转至主页";
+        int--;
+        if(int<0){
+            i=window.clearInterval(i)//结束
+            int = 5; //重新赋值
+            window.location.href = "/";
+        }
+    }
+</script>
 <body>
 error
+
+<p id="timer"></p>
 <a href="/">index</a>
 </body>
 </html>
