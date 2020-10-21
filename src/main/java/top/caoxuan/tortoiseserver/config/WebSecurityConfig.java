@@ -19,8 +19,6 @@ import java.util.UUID;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static UUID uuid;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -65,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        uuid = UUID.randomUUID();
+        UUID uuid = UUID.randomUUID();
         auth.inMemoryAuthentication()
                 .withUser("admin")
                 .password(new BCryptPasswordEncoder().encode("admin"))

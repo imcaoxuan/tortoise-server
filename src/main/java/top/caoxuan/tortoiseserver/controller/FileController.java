@@ -33,6 +33,7 @@ public class FileController {
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile file, @RequestParam("message") String messageJSONString) {
         JSONObject jsonObject;
+        Message message = JSON.parseObject(messageJSONString, Message.class);
         if (file.isEmpty()) {
             return "empty file";
         }
@@ -41,7 +42,7 @@ public class FileController {
         assert originalFilename != null;
         String fileName = originalFilename.substring(originalFilename.lastIndexOf("/") + 1);
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        logger.warn("上传的文件名为：" + fileName + "后缀名为:" + suffixName);
+        logger.warn(message.getFrom()+ "上传了【" + fileName + "】");
         File dest;
         dest = new File(System.getProperty("user.dir") + "/share/files/" + fileName);
         if (!dest.getParentFile().getParentFile().exists()) {
@@ -59,7 +60,7 @@ public class FileController {
             jsonObject.put("result", "failed");
             return jsonObject.toJSONString();
         }
-        Message message = JSON.parseObject(messageJSONString, Message.class);
+
 
         //这个id是客户端生成并发送过来的。
         jsonObject.put("messageId", message.getId());
